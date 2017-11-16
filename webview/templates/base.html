@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.css') }}">
+        <link ref="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    </head>
+    <body>
+        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">หน้าหลัก</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">บัญชีผู้ใช้งาน</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">ลงทะเบียน</a>
+                            <a class="navbar-item">ข้อมูลส่วนตัว</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">ออกจากระบบ</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                </div>
+            </div>
+        </nav>
+        {% block page_content %}
+        {% endblock %}
+        <footer class="footer">
+            <div class="container">
+                <div class="content has-text-centered">
+                <p class="has-text-centered is-size-7">
+                    <strong>ระบบจัดการข้อมูลคัดกรองผู้สูงอายุในประเทศไทย</strong>
+                </p>
+                <p class="has-text-centered is-size-7">
+                    Version 1.01<br>
+                    พัฒนาโดย สถาบันเวชศาสตร์ผู้สูงอายุ กรมการแพทย์ และ คณะเทคนิคการแพทย์ มหาวิทยาลัยมหิดล
+                </p>
+                <p class="has-text-centered is-size-7">
+                    Powered by Python + Flask + Pywebview.
+                </p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
