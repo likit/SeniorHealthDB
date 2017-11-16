@@ -1,4 +1,6 @@
-from flask import Flask, render_template, url_for
+# -*- coding: utf8 -*-
+from flask import Flask, render_template, url_for, jsonify
+from tinydb import TinyDB
 
 app = Flask(__name__)
 
@@ -11,6 +13,14 @@ def main():
 @app.route('/login')
 def login():
     return "<h1>Login Page</h1>"
+
+
+@app.route('/register')
+def register():
+    db = TinyDB('data/users.json')
+    db.insert({'name': 'สมใจหมาย'})
+    return jsonify(db.all())
+
 
 
 def run_server():
