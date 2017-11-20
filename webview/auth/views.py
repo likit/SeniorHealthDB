@@ -1,5 +1,5 @@
-from flask_login import login_user, current_user
-from flask import request, render_template
+from flask_login import login_user, current_user, logout_user
+from flask import request, render_template, redirect
 from . import auth_blueprint as auth
 from server import db, UserQuery
 from models import User
@@ -22,4 +22,10 @@ def login():
     else:
         login_user(u)
         return render_template('auth/login.html')
+
+
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
 
