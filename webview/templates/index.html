@@ -2,23 +2,28 @@
 {% block page_content %}
 <div class="section">
     <div class="container">
-        <div class="card">
+        <div class="card is-centered">
+            <div class="card-image">
+                <figure class="image is-128x128">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" height="480px">
+                </figure>
+            </div>
             <div class="card-content">
                 <p class="title has-text-centered">
-                    ระบบจัดการข้อมูลคัดกรองผู้สูงอายุในประเทศไทย
+                    ระบบจัดการข้อมูลคัดกรองสุขภาพผู้สูงอายุในประเทศไทย
                 </p>
                 <div class="columns is-centered">
                     <div class="column is-half is-narrow is-half">
-                        <form class="box">
+                        <form class="box" action="{{ url_for('auth.login') }}" method="POST">
                             <div class="field">
                                 <label class="label">ลงชื่อเข้าใช้งาน</label>
                                 <div class="control">
-                                    <input class="input" width=20 type="text" placeholder="เลขบัตรประชาชน">
+                                    <input name="pid" class="input" width=20 type="text" placeholder="เลขบัตรประชาชน">
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input" width=20 type="text" placeholder="รหัสผ่าน 6 หลัก">
+                                    <input name="passcode" class="input" width=20 type="text" placeholder="รหัสผ่าน 6 หลัก">
                                 </div>
                             </div>
                             <div class="field is-grouped">

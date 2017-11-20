@@ -28,4 +28,4 @@ if __name__ == '__main__':
     while not url_ok("127.0.0.1", 5757):
         sleep(0.1)
 
-    webview.create_window("Senior Health Registry", "http://127.0.0.1:5757", min_size=(640,480))
+    webview.create_window("Senior Health Registry", "http://127.0.0.1:5757", width=1024, height=800)
