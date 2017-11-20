@@ -7,12 +7,30 @@
             <aside class="menu">
                 <p class="menu-label">ทั่วไป</p>
                 <ul class="menu-list">
+                    <li><a>หน้าหลัก</a></li>
                     <li><a>การคัดกรองโรคเบาหวาน</a></li>
-                    <li><a>โรคประจำตัว</a></li>
+                    <li><a class="is-active">การคัดกรองความดันโลหิตสูง : วัดความดันโลหิต</a></li>
                 </ul>
             </aside>
         </div>
-        <div class="column">Form</div>
+        <div class="column">
+            <div class="box">
+                <form>
+                    <div class="field">
+                        <label class="label">ระดับความดันโลหิตตัวบน หรือซิสโตลิค (SBP)</label>
+                        <div class="control">
+                            <input class="input" type="text" width=20 name="sbp">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">ระดับความดันโลหิตตัวล่าง หรือไดแอสโตลิค (DBP)</label>
+                        <div class="control">
+                            <input class="input" type="text" width=20 name="dbp">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

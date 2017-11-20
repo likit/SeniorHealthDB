@@ -11,8 +11,11 @@ app.secret_key = 'agingthai'
 db = TinyDB('data/users.json')
 UserQuery = Query()
 
-from auth.views import auth as auth_blueprint
+from auth import auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+from forms import form_blueprint
+app.register_blueprint(form_blueprint, url_prefix='/form')
 
 login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
@@ -39,13 +42,6 @@ def main():
 def register():
     db.insert({'id': '1', 'name': 'tester', 'passcode': '333444'})
     return jsonify(db.all())
-
-
-@login_required
-@app.route('/form/<int:form_id>')
-def form(form_id):
-    form = 'form%d.html' % form_id
-    return render_template(form)
 
 
 @app.route('/about')
