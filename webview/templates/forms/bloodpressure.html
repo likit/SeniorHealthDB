@@ -2,35 +2,133 @@
 
 {% block page_content %}
 <div class="section">
-    <div class="columns">
+    <div class="columns is-centered">
         <div class="column is-one-quarter">
             <aside class="menu">
-                <p class="menu-label">ทั่วไป</p>
+                <p class="menu-label">แบบประเมิน</p>
                 <ul class="menu-list">
                     <li><a>หน้าหลัก</a></li>
+                    <li><a>ข้อมูลส่วนบุคคล</a></li>
                     <li><a>การคัดกรองโรคเบาหวาน</a></li>
-                    <li><a class="is-active">การคัดกรองความดันโลหิตสูง : วัดความดันโลหิต</a></li>
+                    <li><a href="{{ url_for('form.bloodpressure') }}"
+                        class="is-active">การคัดกรองความดันโลหิตสูง</a></li>
+                </ul>
+                <p class="menu-label">เมนู</p>
+                <ul class="menu-list">
+                    <li><a href="{{ url_for('form.main', startover=True) }}">
+                        <span class="icon">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span>เริ่มแบบประเมินใหม่</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('form.save') }}">
+                        <span class="icon">
+                            <i class="fa fa-floppy-o"></i>
+                        </span>
+                        <span>บันทึกลงฐานข้อมูล</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('form.exit')}}">
+                        <span class="icon">
+                            <i class="fa fa-sign-out"></i>
+                        </span>
+                        <span>ออก</span>
+                        </a>
+                    </li>
                 </ul>
             </aside>
         </div>
         <div class="column">
             <div class="box">
-                <form>
-                    <div class="field">
-                        <label class="label">ระดับความดันโลหิตตัวบน หรือซิสโตลิค (SBP)</label>
-                        <div class="control">
-                            <input class="input" type="text" width=20 name="sbp">
+                <form id="bpform" action="{{ url_for('form.bloodpressure') }}" method="POST">
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">ความดันโลหิตตัวบน</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <input class="input" type="text"
+                                            name="sbp" autofocus value="{{ session['form_data']['data']['sbp'] }}">
+                                    </p>
+                                    <p class="control">
+                                        <a class="button is-static">มม. ปรอท</a>
+                                    </p>
+                                </div>
+                                <p class="help">กรอกตัวเลขเท่านั้น</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label class="label">ระดับความดันโลหิตตัวล่าง หรือไดแอสโตลิค (DBP)</label>
-                        <div class="control">
-                            <input class="input" type="text" width=20 name="dbp">
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">ความดันโลหิตตัวล่าง</label>
                         </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <input class="input" type="text"
+                                            name="dbp" value="{{ session['form_data']['data']['dbp'] }}">
+                                    </p>
+                                    <p class="control">
+                                        <a class="button is-static">มม. ปรอท</a>
+                                    </p>
+                                </div>
+                                <p class="help">กรอกตัวเลขเท่านั้น</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-light" href="{{ url_for('form.personalinfo') }}">
+                                <span>หน้าก่อนนี้</span>
+                                <span class="icon">
+                                    <i class="fa fa-chevron-left"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" type="submit">
+                                <span>หน้าต่อไป</span>
+                                <span class="icon is-large">
+                                    <i class="fa fa-chevron-right"></i>
+                                </span>
+                            </button>
+                        </p>
                     </div>
                 </form>
             </div>
+            <article class="message is-primary">
+                <div class="message-header"><p>การพิจารณา</p></div>
+                <div class="message-body">
+                    <div class="content">
+                        <p class="subtitle">กรณีความดันปกติ</p>
+                        <ul>
+                            <li>ติดตามวัดความดันโลหิตที่คลินิกอย่างน้อยทุกปี</li>
+                            <li>หากความดันโลหิตใกล้ 150/90 มม.ปรอท อาจวัดมากกว่าปีละ 1 ครั้ง</li>
+                        </ul>
+                        <br>
+                        <p class="subtitle">กรณีความมากกว่าหรือเท่ากับ 140/90 มม.ปรอท</p>
+                        <ul>
+                            <li>วัดความดันโลหิตซ้ำในสองสัปดาห์เพื่อยืนยันว่าเป็นโรคความดันโลหิตสูงจริง</li>
+                            <li>วัดความดันโลหิตที่บ้านหากสามารถทำได้ เพื่อป้องกันการวินิจฉัยว่าเป็นโรคความดันโลหิตสูงเกินความเป็นจริง (white-coat hypertension)</li>
+                        </ul>
+                        <p class="subtitle">กรณีความดันโลหิตสูง</p>
+                        <ul>
+                            <li>ส่งต่อแพทย์ตรวจวินิจฉัยเพื่อทำการยืนยันผลและทำการรักษา</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    $("#bpform").validate();
+</script>
 {% endblock %}

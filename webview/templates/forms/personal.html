@@ -3,6 +3,7 @@
 <div class="section">
     <div class="columns">
         <div class="column is-one-quarter">
+
             <aside class="menu">
                 <p class="menu-label">แบบประเมิน</p>
                 <ul class="menu-list">
@@ -39,28 +40,18 @@
         </div>
         <div class="column">
             <div class="box">
-                {% if not is_in_progress %}
-                <h1 class="title">เริ่มทำแบบประเมินชุดใหม่</h1>
-                {% else %}
-                <h1 class="title">กำลังทำแบบประเมิน</h1>
-                {% endif %}
-                <hr>
-                <p>
-                    <h3 class="subtitle">รหัสแบบประเมิน {{ form_id[:8] }}</h3>
-                    <h3 class="subtitle">ประเมินวันที่ {{ survey_datetime.strftime('%D')}} เวลา {{ survey_datetime.strftime('%H:%M:%S') }}</h3>
-                </p>
                 <div class="field is-grouped">
                     <p class="control">
-                        <a class="button is-danger">
-                            <span>ยกเลิก</span>
+                        <a class="button is-light" href="{{ url_for('form.main') }}">
+                            <span>หน้าก่อนนี้</span>
                             <span class="icon">
-                                <i class="fa fa-close"></i>
+                                <i class="fa fa-chevron-left"></i>
                             </span>
                         </a>
                     </p>
                     <p class="control">
-                        <a class="button is-link" href="{{ url_for('form.personalinfo') }}">
-                            <span>เริ่ม</span>
+                        <a class="button is-success" href="{{ url_for('form.bloodpressure') }}">
+                            <span>หน้าต่อไป</span>
                             <span class="icon">
                                 <i class="fa fa-chevron-right"></i>
                             </span>

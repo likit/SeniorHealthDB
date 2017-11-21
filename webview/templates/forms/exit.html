@@ -20,14 +20,14 @@
                         <span>เริ่มแบบประเมินใหม่</span>
                         </a>
                     </li>
-                    <li><a href="{{ url_for('form.save') }}">
+                    <li><a href="/">
                         <span class="icon">
                             <i class="fa fa-floppy-o"></i>
                         </span>
                         <span>บันทึกลงฐานข้อมูล</span>
                         </a>
                     </li>
-                    <li><a href="{{ url_for('form.exit')}}">
+                    <li><a href="/">
                         <span class="icon">
                             <i class="fa fa-sign-out"></i>
                         </span>
@@ -39,30 +39,34 @@
         </div>
         <div class="column">
             <div class="box">
-                {% if not is_in_progress %}
-                <h1 class="title">เริ่มทำแบบประเมินชุดใหม่</h1>
-                {% else %}
-                <h1 class="title">กำลังทำแบบประเมิน</h1>
-                {% endif %}
-                <hr>
-                <p>
-                    <h3 class="subtitle">รหัสแบบประเมิน {{ form_id[:8] }}</h3>
-                    <h3 class="subtitle">ประเมินวันที่ {{ survey_datetime.strftime('%D')}} เวลา {{ survey_datetime.strftime('%H:%M:%S') }}</h3>
-                </p>
+                <div class="message is-danger">
+                    <div class="message-header">
+                        คำเตือน
+                    </div>
+                    <div class="message-body">
+                        <p>
+                            <h3 class="subtitle">รหัสแบบประเมิน {{ form_id[:8] }}</h3>
+                            <h3 class="subtitle">ประเมินวันที่ {{ survey_datetime.strftime('%D')}} เวลา {{ survey_datetime.strftime('%H:%M:%S') }}</h3>
+                            <p>
+                                ข้อมูลอาจสูญหายได้ถ้าท่านยังไม่ได้บันทึกลงฐานข้อมูล
+                            </p>
+                        </p>
+                    </div>
+                </div>
                 <div class="field is-grouped">
                     <p class="control">
-                        <a class="button is-danger">
-                            <span>ยกเลิก</span>
+                        <a class="button is-link" href="{{ url_for('form.save') }}">
+                            <span>บันทึก</span>
                             <span class="icon">
-                                <i class="fa fa-close"></i>
+                                <i class="fa fa-floppy-o"></i>
                             </span>
                         </a>
                     </p>
                     <p class="control">
-                        <a class="button is-link" href="{{ url_for('form.personalinfo') }}">
-                            <span>เริ่ม</span>
+                        <a class="button is-danger" href="/">
+                            <span>ยกเลิก</span>
                             <span class="icon">
-                                <i class="fa fa-chevron-right"></i>
+                                <i class="fa fa-trash-o"></i>
                             </span>
                         </a>
                     </p>

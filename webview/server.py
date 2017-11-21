@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'agingthai'
 
 db = TinyDB('data/users.json')
+formdb = TinyDB('data/forms.json')
 UserQuery = Query()
 
 from auth import auth_blueprint
