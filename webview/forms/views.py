@@ -10,7 +10,7 @@ from server import db, formdb
 
 
 @form.route('/', methods=["GET"])
-# @login_required
+@login_required
 def main():
     # clear existing form data if user starts over
     if request.args.get('startover', False) and 'form_data' in session:
@@ -37,6 +37,7 @@ def main():
 
 
 @form.route('/personalinfo', methods=["GET", "POST"])
+@login_required
 def personalinfo():
     if request.method == 'POST':
         return redirect(url_for('form.bloodpressure'))
@@ -44,7 +45,7 @@ def personalinfo():
 
 
 @form.route('/bloodpressure', methods=["GET", "POST"])
-# @login_required
+@login_required
 def bloodpressure():
     if request.method == 'POST':
         form_data = session['form_data']
@@ -56,7 +57,7 @@ def bloodpressure():
 
 
 @form.route('/exit')
-# @login_required
+@login_required
 def exit():
     if 'form_data' not in session:
         return redirect(url_for('form.main'))
@@ -68,7 +69,7 @@ def exit():
 
 
 @form.route('/save')
-# @login_required
+@login_required
 def save():
     if 'form_data' not in session:
         return redirect(url_for('form.main'))
@@ -91,5 +92,6 @@ def save():
 
 
 @form.route('/end', methods=["GET"])
+@login_required
 def end():
     return render_template('forms/end.html')

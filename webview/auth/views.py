@@ -1,5 +1,5 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, session
 from . import auth_blueprint as auth
 from server import db, UserQuery
 from models import User
