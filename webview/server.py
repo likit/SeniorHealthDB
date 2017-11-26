@@ -30,7 +30,8 @@ def load_user(user_id):
     except IndexError:
         return None
     else:
-        u = User(user['id'], user['name'])
+        u = User(user['id'],
+            user['firstname'] + ' ' + user['lastname'])
         return u
 
 

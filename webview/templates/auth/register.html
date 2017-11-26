@@ -4,7 +4,20 @@
     <div class="columns">
         <div class="column">
             <div class="box">
-                <form id="registerForm" class="control" action="{{ url_for('auth.register') }}" method="POST">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                    {% for message in messages %}
+                        <span class="icon">
+                            <i class="fa fa-exclamation-triangle"></i>
+                        </span>
+                        {{ message.decode('utf-8') }}
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+                <form id="registerForm" class="control"
+                    action="{{ url_for('auth.register') }}" method="POST">
                     <div class="field">
                         <label class="label">ชื่อ</label>
                         <p class="control">
@@ -23,7 +36,7 @@
                         <label class="label">เลขบัตรประชาชน</label>
                         <p class="control">
                             <input class="input" width=40 type="text"
-                                name="pid" required/>
+                                name="user_id" required/>
                         </p>
                     </div>
                     <div class="field">
