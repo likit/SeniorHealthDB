@@ -34,6 +34,14 @@ def load_user(user_id):
         return u
 
 
+@app.template_filter()
+def toblank(value):
+    if not value:
+        return ''
+    else:
+        return value
+
+
 @app.route('/')
 def main():
     return render_template('index.html')
@@ -55,4 +63,4 @@ def run_server():
 
 
 if __name__ == '__main__':
-    run_server()
+    app.run(debug=True, port=5000)

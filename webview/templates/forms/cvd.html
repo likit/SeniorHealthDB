@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="section">
+    <div class="columns is-centered">
+        <div class="column is-one-quarter">
+            <aside class="menu">
+                <p class="menu-label">แบบประเมิน</p>
+                <ul class="menu-list">
+                    <li><a>หน้าหลัก</a></li>
+                    <li><a>ข้อมูลส่วนบุคคล</a></li>
+                    <li><a>การคัดกรองโรคเบาหวาน</a></li>
+                    <li><a href="{{ url_for('form.bloodpressure') }}">การคัดกรองความดันโลหิตสูง</a></li>
+                    <li><a href="{{ url_for('form.bloodpressure') }}"
+                        class="is-active">การคัดกรองความความเสี่ยงต่อโรคหัวใจและหลอดเลือดสมอง</a></li>
+                </ul>
+                <p class="menu-label">เมนู</p>
+                <ul class="menu-list">
+                    <li><a href="{{ url_for('form.main', startover=True) }}">
+                        <span class="icon">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span>เริ่มแบบประเมินใหม่</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('form.save') }}">
+                        <span class="icon">
+                            <i class="fa fa-floppy-o"></i>
+                        </span>
+                        <span>บันทึกลงฐานข้อมูล</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('form.exit')}}">
+                        <span class="icon">
+                            <i class="fa fa-sign-out"></i>
+                        </span>
+                        <span>ออก</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column">
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-success">
+                    {% for message in messages %}
+                        <span class="icon">
+                            <i class="fa fa-check"></i>
+                        </span>
+                        {{ message.decode('utf-8') }}
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+                <form id="form" action="{{ url_for('form.cvd') }}" method="POST">
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd_smoking" value=1>
+                                ยังคงสูบบุหรี่ ยาเส้น ยาสูบ บุหรี่ซิกาแรต บุหรี่ซิการ์ หรือหยุดสูบไม่เกิน 1 ปี
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd" value='hypertension'
+                                    {% if session['form_data']['data']['bp'].get('systolic',-1) > 130 or session['form_data']['data']['bp'].get('diastolic',-1) > 85 %}
+                                    checked disabled
+                                    {% endif %}
+                                    {% if 'hypertension' in session['form_data']['data']['cvd'] %}
+                                    checked
+                                    {% endif %}
+                                >
+                                ระดับความดันโลหิต >= 130/85 มม.ปรอท และหรือเคยได้รับการวินิจฉัยจากแพทย์ว่าเป็นโรคความดันสูง
+                                {% if session['form_data']['data']['bp'].get('systolic',-1) > 130 or session['form_data']['data']['bp'].get('diastolic',-1) > 85 %}
+                                    <p class="help is-danger">
+                                        ความดันโลหิตสูงกว่า 130/80 มม.ปรอท ระบบจึงตอบให้โดยอัตโนมัติ
+                                    </p>
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd" value='diabetes'
+                                    {% if 'diabetes' in session['form_data']['data']['cvd'] %}
+                                    checked
+                                    {% endif %}
+                                >
+                                ระดับน้ำตาลในเลือด (FPG) >= 100 มก./ดล. และ/หรือ ได้รับการวินิจฉัยจากแพทย์ว่าเป็นโรคเบาหวาน
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd" value='lipid'
+                                    {% if 'lipid' in session['form_data']['data']['cvd'] %}
+                                    checked
+                                    {% endif %}
+                                >
+                                เคยได้รับการวินิจฉัยจากแพทย์หรือพยาบาลว่ามีภาวะไขมันในเลือดผิดปกติ*
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd" value='bodywaist'
+                                    {% if 'bodywaist' in session['form_data']['data']['cvd'] %}
+                                    checked
+                                    {% endif %}
+                                >
+                                เส้นรอบเอวมากกว่าส่วนสูง (ซม.) หาร 2
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd" value='ischemia'
+                                    {% if 'ischemia' in session['form_data']['data']['cvd'] %}
+                                    checked
+                                    {% endif %}
+                                >
+                                เคยได้รับการวินิจฉัยจากแพทย์ว่าเป็นโรคหัวใจขาดเลือด หรืออัมพฤกษ์ อัมพาต
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="cvd" value='family'
+                                    {% if 'family' in session['form_data']['data']['cvd'] %}
+                                    checked
+                                    {% endif %}
+                                >
+                                มีญาติสายตรง (พ่อ แม่ พี่น้องท้องเดียวกัน) ที่แพทย์วินิจฉัยว่าเป็นโรคหัวใจขาดเลือด หรืออัมพฤกษ์ อัมพาต**
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-danger is-outlined" href="{{ url_for('form.bloodpressure') }}">
+                                <span class="icon">
+                                    <i class="fa fa-chevron-left"></i>
+                                </span>
+                                <span>หน้าก่อนนี้</span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success is-outlined" type="submit" name="submit" value="save">
+                                <span>บันทึก</span>
+                                <span class="icon is-large">
+                                    <i class="fa fa-check-circle-o"></i>
+                                </span>
+                            </button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-link is-outlined" type="submit"  name="submit" value="next">
+                                <span>หน้าต่อไป</span>
+                                <span class="icon is-large">
+                                    <i class="fa fa-chevron-right"></i>
+                                </span>
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <article class="message is-primary">
+                <div class="message-header"><p>หมายเหตุ</p></div>
+                <div class="message-body">
+                    <p>* TC >280 มก./ดล. และ/หรือ LDL >100 มก./ดล. และ/หรือ
+                        TG >150 มก./ดล. และ/หรือ HDL ในชาย <40 มก./ดล. ในหญิง <50 มก.ดล.
+                    </p>
+                    <br>
+                    <p>** ผู้ชายเป็นก่อนอายุ 55 ปี ผู้หญิงเป็นก่อนอายุ 65 ปี</p>
+                    <br>
+                    <p>ผู้ที่ได้รับวินิจฉัยว่าเป็นเบาหวาน ความดันโลหิตสูง โรคหัวใจขาดเลือด
+                        หรือโรคอัมพฤกษ์ อัมพาต แต่ยังไม่ได้รักษาถือว่าเป็นกลุ่มเสี่ยง
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    $("#form").validate();
+</script>
+{% endblock %}

@@ -12,6 +12,8 @@
                     <li><a>การคัดกรองโรคเบาหวาน</a></li>
                     <li><a href="{{ url_for('form.bloodpressure') }}"
                         class="is-active">การคัดกรองความดันโลหิตสูง</a></li>
+                    <li><a href="{{ url_for('form.bloodpressure') }}">
+                        การคัดกรองความความเสี่ยงต่อโรคหัวใจและหลอดเลือดสมอง</a></li>
                 </ul>
                 <p class="menu-label">เมนู</p>
                 <ul class="menu-list">
@@ -41,6 +43,18 @@
         </div>
         <div class="column">
             <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-success">
+                    {% for message in messages %}
+                        <span class="icon">
+                            <i class="fa fa-check"></i>
+                        </span>
+                        {{ message.decode('utf-8') }}
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
                 <form id="bpform" action="{{ url_for('form.bloodpressure') }}" method="POST">
                     <div class="field is-horizontal">
                         <div class="field-label">
@@ -51,7 +65,7 @@
                                 <div class="field has-addons">
                                     <p class="control">
                                         <input class="input" type="text"
-                                            name="sbp" autofocus value="{{ session['form_data']['data']['sbp'] }}">
+                                            name="sbp" autofocus value="{{ bp_systolic|toblank }}">
                                     </p>
                                     <p class="control">
                                         <a class="button is-static">มม. ปรอท</a>
@@ -70,7 +84,7 @@
                                 <div class="field has-addons">
                                     <p class="control">
                                         <input class="input" type="text"
-                                            name="dbp" value="{{ session['form_data']['data']['dbp'] }}">
+                                            name="dbp" value="{{ bp_diastolic|toblank }}">
                                     </p>
                                     <p class="control">
                                         <a class="button is-static">มม. ปรอท</a>
@@ -82,7 +96,7 @@
                     </div>
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-light" href="{{ url_for('form.personalinfo') }}">
+                            <a class="button is-danger is-outlined" href="{{ url_for('form.personalinfo') }}">
                                 <span>หน้าก่อนนี้</span>
                                 <span class="icon">
                                     <i class="fa fa-chevron-left"></i>
@@ -90,7 +104,15 @@
                             </a>
                         </p>
                         <p class="control">
-                            <button class="button is-success" type="submit">
+                            <button class="button is-success is-outlined" type="submit" name="submit" value="save">
+                                <span>บันทึก</span>
+                                <span class="icon is-large">
+                                    <i class="fa fa-check-circle-o"></i>
+                                </span>
+                            </button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-link is-outlined" type="submit" name="submit" value="next">
                                 <span>หน้าต่อไป</span>
                                 <span class="icon is-large">
                                     <i class="fa fa-chevron-right"></i>

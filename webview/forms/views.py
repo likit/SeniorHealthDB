@@ -4,7 +4,7 @@ from datetime import datetime
 
 from . import form_blueprint as form
 from flask_login import login_required, current_user
-from flask import render_template, session, request, redirect, url_for
+from flask import render_template, session, request, redirect, url_for, flash
 from tinydb import Query
 from server import db, formdb
 
@@ -17,7 +17,10 @@ def main():
         del session['form_data']
 
     if 'form_data' not in session:
-        session['form_data'] = {'_id': None, 'data': {}}
+        session['form_data'] = {'_id': None, 'data': {
+            'bp': {},
+            'cvd': {},
+        }}
 
     form_data = session['form_data']
     if not form_data['_id']:
@@ -47,13 +50,49 @@ def personalinfo():
 @form.route('/bloodpressure', methods=["GET", "POST"])
 @login_required
 def bloodpressure():
+    form_data = session['form_data']
+    bp = form_data['data']['bp']
+
     if request.method == 'POST':
-        form_data = session['form_data']
-        form_data['data']['sbp'] = request.form['sbp']
-        form_data['data']['dbp'] = request.form['dbp']
+        try:
+            bp['systolic'] = int(request.form['sbp'])
+        except ValueError:
+            bp['systolic'] = None
+        try:
+            bp['diastolic'] = int(request.form['dbp'])
+        except ValueError:
+            bp['diastolic'] = None
+        form_data['data']['bp'] = bp
         session['form_data'] = form_data
-        return redirect(url_for('form.end'))
-    return render_template('forms/bloodpressure.html')
+        if request.form['submit'] == 'next':
+            return redirect(url_for('form.cvd'))
+        if request.form['submit'] == 'save':
+            flash('บันทึกลงหน่วยความจำชั่วคราวแล้ว')
+            return redirect(url_for('form.bloodpressure'))
+
+    bp_systolic = bp.get('systolic', None)
+    bp_diastolic = bp.get('diastolic', None)
+
+    return render_template('forms/bloodpressure.html',
+                bp_systolic=bp_systolic, bp_diastolic=bp_diastolic)
+
+
+@form.route('/cvd', methods=['GET', 'POST'])
+@login_required
+def cvd():
+    form_data = session['form_data']
+    cvd = form_data['data']['cvd']
+
+    if request.method == 'POST':
+        form_data['data']['cvd'] = request.form.getlist('cvd')
+        session['form_data'] = form_data
+        if request.form['submit'] == 'next':
+            return redirect(url_for('form.end'))
+        else:
+            flash('บันทึกลงหน่วยความจำชั่วคราวแล้ว')
+            return redirect(url_for('form.cvd'))
+
+    return render_template('forms/cvd.html')
 
 
 @form.route('/exit')
