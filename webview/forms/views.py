@@ -19,7 +19,8 @@ def main():
     if 'form_data' not in session:
         session['form_data'] = {'_id': None, 'data': {
             'bp': {},
-            'cvd': {},
+            'cvd': [],
+            'dental': {},
         }}
 
     form_data = session['form_data']
@@ -87,12 +88,57 @@ def cvd():
         form_data['data']['cvd'] = request.form.getlist('cvd')
         session['form_data'] = form_data
         if request.form['submit'] == 'next':
-            return redirect(url_for('form.end'))
+            return redirect(url_for('form.dental'))
         else:
             flash('บันทึกลงหน่วยความจำชั่วคราวแล้ว')
             return redirect(url_for('form.cvd'))
 
     return render_template('forms/cvd.html')
+
+
+@form.route('/dental', methods=['GET', 'POST'])
+@login_required
+def dental():
+    form_data = session['form_data']
+    dental = form_data['data']['dental']
+    if request.method == 'POST':
+        dental_p1_1_1 = request.form.get('p1.1.1', None)
+        dental_p1_1_1_note = request.form.get('p1.1.1.note', None)
+        dental_p1_1_2 = request.form.get('p1.1.2', None)
+        dental_p1_1_3 = request.form.get('p1.1.3', None)
+        dental_p1_1_3_note = request.form.get('p1.1.3.note', None)
+        dental_p1_2 = request.form.getlist('p1.2')
+        dental_p2_1 = request.form.get('p2.1', None)
+        dental_p2_2 = request.form.get('p2.2', None)
+        dental_p2_3 = request.form.get('p2.3', None)
+        dental_p2_4 = request.form.get('p2.4', None)
+        dental_p2_5 = request.form.get('p2.5', None)
+        dental_p2_6 = request.form.get('p2.6', None)
+        dental_p2_7 = request.form.get('p2.7', None)
+        dental_p3 = request.form.getlist('p3')
+
+        dental['p1.1.1'] = dental_p1_1_1
+        dental['p1.1.1.note'] = dental_p1_1_1_note
+        dental['p1.1.2'] = dental_p1_1_2
+        dental['p1.1.3'] = dental_p1_1_3
+        dental['p1.1.3.note'] = dental_p1_1_3_note
+        dental['p1.2'] = dental_p1_2
+        dental['p2.1'] = dental_p2_1
+        dental['p2.2'] = dental_p2_2
+        dental['p2.3'] = dental_p2_3
+        dental['p2.4'] = dental_p2_4
+        dental['p2.5'] = dental_p2_5
+        dental['p2.6'] = dental_p2_6
+        dental['p2.7'] = dental_p2_7
+        dental['p3'] = dental_p3
+        form_data['data']['dental'] = dental
+        session['form_data'] = form_data
+        if request.form['submit'] == 'save':
+            flash('บันทึกลงหน่วยความจำชั่วคราวแล้ว')
+            redirect(url_for('form.dental'))
+        if request.form['submit'] == 'next':
+            redirect(url_for('form.end'))
+    return render_template('forms/dental.html')
 
 
 @form.route('/exit')

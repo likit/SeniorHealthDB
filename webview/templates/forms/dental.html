@@ -1,0 +1,525 @@
+{% extends "base.html" %}
+{% block page_content %}
+<div class="section">
+    <div class="columns">
+        <div class="column is-one-quarter">
+
+            <aside class="menu">
+                <p class="menu-label">Form ID</p>
+                <ul class="menu-list">
+                    <li><a>{{ session['form_data']['_id'][:8] }}</a></li>
+                </ul>
+                <p class="menu-label">แบบประเมิน</p>
+                <ul class="menu-list">
+                    <li><a href="{{ url_for('form.main') }}">หน้าหลัก</a></li>
+                    <li><a href="{{ url_for('form.personalinfo') }}">ข้อมูลส่วนบุคคล</a></li>
+                    <li><a>การคัดกรองโรคเบาหวาน</a></li>
+                    <li><a href="{{ url_for('form.bloodpressure') }}">การคัดกรองความดันโลหิตสูง : วัดความดันโลหิต</a></li>
+                    <li><a href="{{ url_for('form.cvd') }}">
+                        การคัดกรองความความเสี่ยงต่อโรคหัวใจและหลอดเลือดสมอง</a></li>
+                    <li><a class="is-active" href="{{ url_for('form.dental') }}">
+                        การประเมินสุขภาพช่องปาก</a></li>
+                </ul>
+                <p class="menu-label">เมนู</p>
+                <ul class="menu-list">
+                    <li><a href="{{ url_for('form.main', startover=True) }}">
+                        <span class="icon">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span>เริ่มแบบประเมินใหม่</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('form.save') }}">
+                        <span class="icon">
+                            <i class="fa fa-floppy-o"></i>
+                        </span>
+                        <span>บันทึกลงฐานข้อมูล</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('form.exit')}}">
+                        <span class="icon">
+                            <i class="fa fa-sign-out"></i>
+                        </span>
+                        <span>ออก</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column">
+            <span class="tag is-light is-size-7 is-aligned-right">ผู้รับการประเมิน นายสมใจ หมายปอง อายุ 45 ปี</span>
+            <div class="box">
+                <form id="form" action="{{ url_for('form.dental') }}" method="POST">
+                    <p class="title">ส่วนที่ 1 ประเมินพฤติกรรมเสี่ยงต่อสุขภาพช่องปาก</p>
+                    <p class="subtitle">1 ประเมินพฤติกรรมการทำความสะอาดช่องปาก</p>
+                    <div class="box">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="notification is-success">
+                            {% for message in messages %}
+                                <span class="icon">
+                                    <i class="fa fa-check"></i>
+                                </span>
+                                {{ message.decode('utf-8') }}
+                            {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                        1.1 การแปรงฟัน
+                        <hr>
+                        <div class="field">
+                            <p class="control">
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.1" value=0
+                                    {% if session['form_data']['data']['dental']['p1.1.1']=="0" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    ไม่ได้แปรงฟัน / ไม่ได้ใช้แปรงสีฟัน
+                                </label>
+                                <br>
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.1" value=1
+                                    {% if session['form_data']['data']['dental']['p1.1.1']=="1" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    แปรงฟันวันละ 1 ครั้ง ก่อนนอน
+                                </label>
+                                <br>
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.1" value=2
+                                    {% if session['form_data']['data']['dental']['p1.1.1']=="2" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    แปรงฟันวันละ 2 ครั้ง เช้าและก่อนนอน
+                                </label>
+                                <br>
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.1" value=3
+                                    {% if session['form_data']['data']['dental']['p1.1.1']=="3" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    แปรงฟันมากกว่าวันละ 2 ครั้ง (โปรดระบุด้านล่าง)
+                                </label>
+                                <br>
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.1" value=4
+                                    {% if session['form_data']['data']['dental']['p1.1.1']=="4" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    อื่นๆ (โปรดระบุด้านล่าง)
+                                </label>
+                            </p>
+                            <p class="control">
+                                <input class="input" type="text" name="p1.1.1.note"
+                                    placeholder="โปรดระบุรายละเอียดตรงนี้"
+                                    value="{{ session['form_data']['data']['dental']['p1.1.1.note']}}">
+                            </p>
+                        </div>
+                    </div> <!-- end of 1.1 -->
+                    <div class="box">
+                        1.2 การใช้ยาสีฟันผสมฟลูออไรด์ทุกวัน
+                        <hr>
+                        <div class="field">
+                            <p class="control">
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.2" value=0
+                                    {% if session['form_data']['data']['dental']['p1.1.2']=="0" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    ไม่ใช้
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.2" value=1
+                                    {% if session['form_data']['data']['dental']['p1.1.2']=="1" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    ใช้
+                                </label>
+                            </p>
+                        </div>
+                    </div> <!-- end of 1.2 -->
+                    <div class="box">
+                        1.3 การทำความสะอาดซอกฟัน ทุกวัน / เกือบทุกวัน
+                        <hr>
+                        <div class="field">
+                            <p class="control">
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.3" value=0
+                                    {% if session['form_data']['data']['dental']['p1.1.3']=="0" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    ไม่ทำ
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="p1.1.3" value=1
+                                    {% if session['form_data']['data']['dental']['p1.1.3']=="1" %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    ทำโดยใช้อุปกรณ์ได้แก่ (โปรดระบุด้านล่าง)
+                                </label>
+                            </p>
+                            <p class="control">
+                                <input class="input" type="text" name="p1.1.3.note"
+                                    placeholder="โปรดระบุรายละเอียดตรงนี้"
+                                    value="{{ session['form_data']['data']['dental']['p1.1.3.note'] }}">
+                            </p>
+                        </div>
+                    </div> <!-- end of 1.3 -->
+                    <p class="subtitle">2 ประเมินสภาวะเสี่ยงต่อการเกิดโรคในช่องปาก</p>
+                    <div class="box">
+                        <div class="field">
+                            <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="p1.2" value="heavysmoking"
+                                    {% if 'heavysmoking' in session['form_data']['data']['dental']['p1.2'] %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    สูบบุหรี่มากกว่า 10 มวน/วัน
+                                </label>
+                            </div>
+                            </label>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="p1.2" value="gum"
+                                    {% if 'gum' in session['form_data']['data']['dental']['p1.2'] %}
+                                    checked
+                                    {% endif %}
+                                    >
+                                    เคี้ยวหมากเป็นประจำ
+                                </label>
+                            </div>
+                            </label>
+                        </div>
+                    </div> <!-- end 2 -->
+                    <div class="box">
+                        <p class="title">ส่วนที่ 2 ประเมินสุขภาพช่องปากผู้สูงอายุ</p>
+                        <table class="table is-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ข้อ</th>
+                                    <th>คำถาม</th>
+                                    <th colspan="2">คำตอบ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>เนื้อเยื่อในช่องปาก
+                                        <span class="is-size-7">บริเวณริมฝีปาก แก้ม ลิ้น ปุ่ม ก้อนเนื้อ มีแผลเรื้อรังหรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.1" value=0
+                                                {% if session['form_data']['data']['dental']['p2.1']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.1" value=1
+                                                {% if session['form_data']['data']['dental']['p2.1']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ผิดปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.1 -->
+                                <tr>
+                                    <td>2</td>
+                                    <td>เหงือกและอวัยวะปริทันต์
+                                        <span class="is-size-7">บริเวณเหงือกมีเลือดออก มีฝีหนอง ฟันโยกหรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.2" value=0
+                                                {% if session['form_data']['data']['dental']['p2.2']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.2" value=1
+                                                {% if session['form_data']['data']['dental']['p2.2']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ผิดปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.2 -->
+                                <tr>
+                                    <td>3</td>
+                                    <td>ฟันผุ
+                                        <span class="is-size-7">มีฟันเป็นรู เสียวฟัน ฟันหัก ฟันแตกเหลือแต่ตอฟัน หรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.3" value=0
+                                                {% if session['form_data']['data']['dental']['p2.3']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.3" value=1
+                                                {% if session['form_data']['data']['dental']['p2.3']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ผิดปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.3 -->
+                                <tr>
+                                    <td>4</td>
+                                    <td>ปัญหาการเคี้ยวอาหาร / การกลืน
+                                        <span class="is-size-7">มีปัญหาการเคี้ยวอาหาร / การกลืน หรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.4" value=0
+                                                {% if session['form_data']['data']['dental']['p2.4']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.4" value=1
+                                                {% if session['form_data']['data']['dental']['p2.4']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ผิดปกติ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.4 -->
+                                <tr>
+                                    <td>5</td>
+                                    <td>ฟันเทียม
+                                        <span class="is-size-7">จำเป็นต้องใส่ฟันเทียม หรือทำฟันเทียมหรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.5" value=0
+                                                {% if session['form_data']['data']['dental']['p2.5']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ไม่จำเป็น
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.5" value=1
+                                                {% if session['form_data']['data']['dental']['p2.5']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                จำเป็น
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.5 -->
+                                <tr>
+                                    <td>6</td>
+                                    <td>การได้รับการตรวจหรือรักษาจากทันตบุคลากร
+                                        <span class="is-size-7">ท่านเคยได้รับการตรวจหรือรักษาจากทันตบุคลากรหรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.6" value=0
+                                                {% if session['form_data']['data']['dental']['p2.6']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                เคย
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.6" value=1
+                                                {% if session['form_data']['data']['dental']['p2.6']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ไม่เคย
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.6 -->
+                                <tr>
+                                    <td>7</td>
+                                    <td>การได้รับการตรวจหรือรักษาจากทันตบุคลากร
+                                        <span class="is-size-7">ท่านเคยได้รับการตรวจหรือรักษาจากทันตบุคลากรหรือไม่</span></td>
+                                    <div class="field">
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.7" value=0
+                                                {% if session['form_data']['data']['dental']['p2.7']=="0" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ไม่ต้องการ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="p2.7" value=1
+                                                {% if session['form_data']['data']['dental']['p2.7']=="1" %}
+                                                checked
+                                                {% endif %}
+                                                >
+                                                ต้องการ
+                                            </label>
+                                        </div>
+                                    </td>
+                                    </div>
+                                </tr> <!-- end of 2.7 -->
+                            </tbody>
+                        </table>
+                    </div> <!-- end of part 2 -->
+                    <div class="box">
+                        <p class="title">ส่วนที่ 3 แผนการส่งต่อ</p>
+                        <div class="box">
+                            <p>การส่งต่อเพื่อให้ผู้สูงอายุได้รับบริการรักษาทางทันตกรรมจากทันตบุคลากร</p>
+                            <hr>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="p3" value=1
+                                        {% if "1" in session['form_data']['data']['dental']['p3'] %}
+                                        checked
+                                        {% endif %}
+                                        >
+                                        เนื้อเยื่อในช่องปาก
+                                    </label>
+                                    <br>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="p3" value=2
+                                        {% if "2" in session['form_data']['data']['dental']['p3'] %}
+                                        checked
+                                        {% endif %}
+                                        >
+                                        เหงือกและอวัยวะปริทันต์
+                                    </label>
+                                    <br>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="p3" value=3
+                                        {% if "3" in session['form_data']['data']['dental']['p3'] %}
+                                        checked
+                                        {% endif %}
+                                        >
+                                        ฟันผุ
+                                    </label>
+                                    <br>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="p3" value=4
+                                        {% if "4" in session['form_data']['data']['dental']['p3'] %}
+                                        checked
+                                        {% endif %}
+                                        >
+                                        ปัญหาการเคี้ยวอาหาร / การกลืน
+                                    </label>
+                                    <br>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="p3" value=5
+                                        {% if "5" in session['form_data']['data']['dental']['p3'] %}
+                                        checked
+                                        {% endif %}
+                                        >
+                                        ฟันเทียม
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-danger is-outlined" href="{{ url_for('form.cvd') }}">
+                                <span>หน้าก่อนนี้</span>
+                                <span class="icon">
+                                    <i class="fa fa-chevron-left"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success is-outlined"
+                                type="submit" name="submit" value="save">
+                                <span>บันทึก</span>
+                                <span class="icon is-large">
+                                    <i class="fa fa-check-circle-o"></i>
+                                </span>
+                            </button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-link is-outlined" href="{{ url_for('form.end') }}"
+                                type="submit" name="submit" value="next">
+                                <span>หน้าต่อไป</span>
+                                <span class="icon">
+                                    <i class="fa fa-chevron-right"></i>
+                                </span>
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
