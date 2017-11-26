@@ -177,7 +177,7 @@ def save():
             except IndexError:  # if the record does not exist, insert new record
                 formdb.insert(form_data)
             else:  # else update the record
-                formdb.update(RecQ._id==form_data['_id'])
+                formdb.update({'data': form_data['data']}, RecQ._id==form_data['_id'])
         except:
             return render_template('forms/saved.html', success=False,
                     form_id=form_data['_id'],
