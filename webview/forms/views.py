@@ -4,9 +4,13 @@ from datetime import datetime
 
 from . import form_blueprint as form
 from flask_login import login_required, current_user
-from flask import render_template, session, request, redirect, url_for, flash
+from flask import (render_template, session,
+                    request, redirect, url_for, flash)
 from tinydb import Query
 from server import db, formdb
+
+DATETIMEFORMAT = '%Y-%m-%d %H:%M:%S'
+RecQ = Query()
 
 
 @form.route('/', methods=["GET"])
@@ -17,11 +21,13 @@ def main():
         del session['form_data']
 
     if 'form_data' not in session:
-        session['form_data'] = {'_id': None, 'data': {
-            'bp': {},
-            'cvd': [],
-            'dental': {},
-        }}
+        session['form_data'] = {'_id': None,
+                                    'created_by': current_user.id,
+                                    'data': {
+                                        'bp': {},
+                                        'cvd': [],
+                                        'dental': {},
+                                    }}
 
     form_data = session['form_data']
     if not form_data['_id']:
@@ -166,10 +172,17 @@ def save():
                 updated_datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             form_data['data']['created_date'] = \
                 form_data['data']['created_date'].strftime("%Y-%m-%d %H:%M:%S")
-            formdb.insert(form_data)
+            try:
+                record = formdb.search(RecQ._id==form_data['_id'])[0]
+            except IndexError:  # if the record does not exist, insert new record
+                formdb.insert(form_data)
+            else:  # else update the record
+                formdb.update(RecQ._id==form_data['_id'])
         except:
-            return render_template('forms/saved.html',
-                success=False)
+            return render_template('forms/saved.html', success=False,
+                    form_id=form_data['_id'],
+                    updated_datetime=updated_datetime)
+        del session['form_data']
         return render_template('forms/saved.html',
                     success=True,
                     form_id=form_data['_id'],
@@ -180,3 +193,54 @@ def save():
 @login_required
 def end():
     return render_template('forms/end.html')
+
+
+@form.route('/list', methods=['GET'])
+@login_required
+def record_list():
+    records = formdb.search(RecQ.created_by==current_user.id)
+    return render_template('forms/list.html', records=records)
+
+
+@form.route('/edit')
+@login_required
+def edit():
+    recid = request.args.get('recid', None)
+    if recid:
+        record = formdb.search(RecQ._id==recid)[0]
+        if record:
+            if 'form_data' in session:
+                form_data = session['form_data']
+            form_data['_id'] = record['_id']
+            record['data']['created_date'] = \
+                    datetime.strptime(record['data']['created_date'],
+                    DATETIMEFORMAT)
+            record['data']['updated_date'] = \
+                    datetime.strptime(record['data']['updated_date'],
+                    DATETIMEFORMAT)
+            form_data['data'] = record['data']
+            session['form_data'] = form_data
+            return redirect(url_for('form.main'))
+    else:
+        flash('ไม่พบรายการที่ท่านต้องการแก้ไข')
+        return redirect(url_for('form.record_list'))
+
+
+@form.route('/delete_record')
+@login_required
+def delete_record():
+    recid = request.args.get('recid', None)
+    confirmed = request.args.get('confirmed', None)
+    if not confirmed and recid:
+        return render_template('forms/delete_rec.html', recid=recid)
+    if confirmed and recid:
+        try:
+            formdb.remove(RecQ._id==recid)
+        except:
+            flash('ไม่สามารถลบรายการได้')
+            return redirect(url_for('form.list'))
+        else:
+            return redirect(url_for('form.list'))
+    else:
+        flash('ไม่พบรายการที่ท่านต้องการลบ')
+        return redirect(url_for('form.list'))
