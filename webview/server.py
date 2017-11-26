@@ -3,13 +3,17 @@ from flask import Flask, render_template, url_for, jsonify, request
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
 from tinydb import TinyDB, Query
 import webview
+import os
+import sys
 from models import User
-
-app = Flask(__name__)
+template_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+static_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+data_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 app.secret_key = 'agingthai'
 
-db = TinyDB('data/users.json')
-formdb = TinyDB('data/forms.json')
+db = TinyDB(os.path.join(data_folder,'users.json'))
+formdb = TinyDB(os.path.join(data_folder, 'forms.json'))
 UserQuery = Query()
 
 from auth import auth_blueprint
@@ -17,6 +21,7 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 from forms import form_blueprint
 app.register_blueprint(form_blueprint, url_prefix='/form')
+
 
 login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
@@ -61,7 +66,7 @@ def about():
 
 
 def run_server():
-    app.run(host='127.0.0.1', port=5757)
+    app.run(host='127.0.0.1', port=5757, threaded=True)
 
 
 if __name__ == '__main__':
