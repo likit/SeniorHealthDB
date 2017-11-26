@@ -7,12 +7,12 @@
             <aside class="menu">
                 <p class="menu-label">แบบประเมิน</p>
                 <ul class="menu-list">
-                    <li><a>หน้าหลัก</a></li>
-                    <li><a>ข้อมูลส่วนบุคคล</a></li>
+                    <li><a href="{{ url_for('form.main') }}">หน้าหลัก</a></li>
+                    <li><a href="{{ url_for('form.personalinfo') }}">ข้อมูลส่วนบุคคล</a></li>
                     <li><a>การคัดกรองโรคเบาหวาน</a></li>
                     <li><a href="{{ url_for('form.bloodpressure') }}"
                         class="is-active">การคัดกรองความดันโลหิตสูง</a></li>
-                    <li><a href="{{ url_for('form.bloodpressure') }}">
+                    <li><a href="{{ url_for('form.cvd') }}">
                         การคัดกรองความความเสี่ยงต่อโรคหัวใจและหลอดเลือดสมอง</a></li>
                 </ul>
                 <p class="menu-label">เมนู</p>
