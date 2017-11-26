@@ -44,7 +44,8 @@ def toblank(value):
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    accounts = db.all()
+    return render_template('index.html', accounts=accounts)
 
 
 @app.route('/register')

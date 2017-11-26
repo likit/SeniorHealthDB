@@ -15,11 +15,17 @@
             <div class="navbar-menu is-active">
                 <div class="navbar-start">
                     <a href="/" class="navbar-item">หน้าหลัก</a>
-                    <a href="{{ url_for('form.main') }}" class="navbar-item">กรอกข้อมูล</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">ข้อมูล</a>
+                        <div class="navbar-dropdown">
+                            <a href="{{ url_for('form.main') }}" class="navbar-item">ป้อนข้อมูล</a>
+                            <a href="{{ url_for('form.record_list') }}" class="navbar-item">รายการข้อมูล</a>
+                        </div>
+                    </div>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">บัญชีผู้ใช้งาน</a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item">ลงทะเบียน</a>
+                            <a class="navbar-item" href="{{ url_for('auth.register') }}">ลงทะเบียน</a>
                             <a class="navbar-item">ข้อมูลส่วนตัว</a>
                             <hr class="navbar-divider">
                             <a class="navbar-item" href="{{ url_for('auth.logout') }}">ออกจากระบบ</a>

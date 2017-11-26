@@ -5,13 +5,15 @@
     <div class="columns is-centered">
         <div class="column is-half is-narrow is-half">
             <form class="box" action="{{ url_for('auth.login') }}" method="POST">
+                <input type="hidden" name="user_id" value="{{ account.id }}">
+                <p class="subtitle">
+                    <span class="icon is-medium">
+                        <i class="fa fa-user fa-2x"></i>
+                    </span>
+                    {{ account.name }}
+                </p>
                 <div class="field">
-                    <label class="label">กรุณาลงชื่อเข้าใช้งาน</label>
-                    <div class="control">
-                        <input name="pid" class="input" width=20 type="text" placeholder="เลขบัตรประชาชน">
-                    </div>
-                </div>
-                <div class="field">
+                    <label class="label">Enter Passcode</label>
                     <div class="control">
                         <input name="passcode" class="input" width=20 type="password" placeholder="รหัสผ่าน 6 หลัก">
                     </div>

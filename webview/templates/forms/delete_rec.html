@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block page_content %}
+<div class="section">
+    <div class="columns">
+        <div class="column is-one-quarter">
+            <div class="box">
+                <div class="message is-danger">
+                    <div class="message-header">
+                        ท่านกำลังจะลบรายการข้อมูล
+                    </div>
+                    <div class="message-body">
+                        <p>ยืนยันที่จะลบรายการ?</p>
+                    </div>
+                    <div class="is-grouped">
+                        <a class="button is-primary"
+                            href="{{ url_for('form.delete_record', confirmed=True, recid=recid) }}">
+                            ยืนยัน</a>
+                        <a class="button is-danger"
+                            href="{{ url_for('form.delete_record', confirmed=False, recid=recid) }}">
+                            ยกเลิก</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
