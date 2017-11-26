@@ -169,9 +169,9 @@ def save():
         try:
             updated_datetime = datetime.now()
             form_data['data']['updated_date'] = \
-                updated_datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                updated_datetime.now().strftime(DATETIMEFORMAT)
             form_data['data']['created_date'] = \
-                form_data['data']['created_date'].strftime("%Y-%m-%d %H:%M:%S")
+                form_data['data']['created_date'].strftime(DATETIMEFORMAT)
             try:
                 record = formdb.search(RecQ._id==form_data['_id'])[0]
             except IndexError:  # if the record does not exist, insert new record
