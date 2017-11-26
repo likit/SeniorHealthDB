@@ -11,6 +11,8 @@ from models import User
 def login():
     if request.method == 'GET':
         user_id = request.args.get('user_id', None)
+        if user_id == None:
+            return redirect(url_for('main'))
         account = db.search(UserQuery.id==user_id)[0]
         return render_template('auth/login.html', account=account)
 
@@ -33,7 +35,6 @@ def login():
 
 
 @auth.route('/logout')
-@login_required
 def logout():
     if 'form_data' in session:
         del session['form_data']

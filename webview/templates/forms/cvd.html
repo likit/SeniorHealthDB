@@ -5,6 +5,10 @@
     <div class="columns is-centered">
         <div class="column is-one-quarter">
             <aside class="menu">
+                <p class="menu-label">Form ID</p>
+                <ul class="menu-list">
+                    <li><a>{{ session['form_data']['_id'][:8] }}</a></li>
+                </ul>
                 <p class="menu-label">แบบประเมิน</p>
                 <ul class="menu-list">
                     <li><a href="{{ url_for('form.main') }}">หน้าหลัก</a></li>
@@ -13,6 +17,8 @@
                     <li><a href="{{ url_for('form.bloodpressure') }}">การคัดกรองความดันโลหิตสูง</a></li>
                     <li><a href="{{ url_for('form.cvd') }}"
                         class="is-active">การคัดกรองความความเสี่ยงต่อโรคหัวใจและหลอดเลือดสมอง</a></li>
+                    <li><a href="{{ url_for('form.dental') }}">
+                        การประเมินสุขภาพช่องปาก</a></li>
                 </ul>
                 <p class="menu-label">เมนู</p>
                 <ul class="menu-list">

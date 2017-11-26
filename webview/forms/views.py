@@ -141,9 +141,9 @@ def dental():
         session['form_data'] = form_data
         if request.form['submit'] == 'save':
             flash('บันทึกลงหน่วยความจำชั่วคราวแล้ว')
-            redirect(url_for('form.dental'))
+            return redirect(url_for('form.dental'))
         if request.form['submit'] == 'next':
-            redirect(url_for('form.end'))
+            return redirect(url_for('form.end'))
     return render_template('forms/dental.html')
 
 
@@ -233,14 +233,14 @@ def delete_record():
     confirmed = request.args.get('confirmed', None)
     if not confirmed and recid:
         return render_template('forms/delete_rec.html', recid=recid)
-    if confirmed and recid:
+    if (confirmed == "true") and recid:
+        print('confirmed is yes')
         try:
             formdb.remove(RecQ._id==recid)
         except:
             flash('ไม่สามารถลบรายการได้')
-            return redirect(url_for('form.list'))
+            return redirect(url_for('form.record_list'))
         else:
-            return redirect(url_for('form.list'))
+            return redirect(url_for('form.record_list'))
     else:
-        flash('ไม่พบรายการที่ท่านต้องการลบ')
-        return redirect(url_for('form.list'))
+        return redirect(url_for('form.record_list'))

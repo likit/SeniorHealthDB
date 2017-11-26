@@ -7,23 +7,19 @@
             <form class="box" action="{{ url_for('auth.login') }}" method="POST">
                 <input type="hidden" name="user_id" value="{{ account.id }}">
                 <p class="subtitle">
-                    <span class="icon is-medium">
-                        <i class="fa fa-user fa-2x"></i>
+                    <span class="icon is-large">
+                        <i class="fa fa-user-circle-o fa-2x"></i>
                     </span>
-                    {{ account.firstname }}
+                    {{ account.firstname }} {{ account.lastname}}
                 </p>
                 <div class="field">
-                    <label class="label">Enter Passcode</label>
                     <div class="control">
                         <input name="passcode" class="input" width=20 type="password" placeholder="รหัสผ่าน 6 หลัก">
                     </div>
                 </div>
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-link">Submit</button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-text">Cancel</button>
+                        <button class="button is-link" type="submit">Submit</button>
                     </div>
                 </div>
             </form>

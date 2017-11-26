@@ -9,17 +9,38 @@
                 </p>
                 <div class="columns is-centered">
                     <div class="column is-half is-narrow is-half">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="notification is-danger">
+                            {% for message in messages %}
+                                <span class="icon">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                </span>
+                                {{ message.decode('utf-8') }}
+                            {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% endwith %}
                         <nav class="panel">
                             <p class="panel-heading">
                                 เลือกบัญชีเพื่อลงทะเบียนเข้าสู่ระบบ
                             </p>
                             {% for account in accounts %}
-                            <a class="panel-block"
+                            <a
+                                {% if account.id == current_user.id %}
+                                class="panel-block is-active" href="#">
+                                {% else %}
+                                class="panel-block"
                                 href="{{ url_for('auth.login', user_id=account.id) }}">
+                                {% endif %}
                                 <span class="panel-icon">
-                                    <i class="fa fa-user"></i>
+                                    {% if account.id == current_user.id %}
+                                    <i class="fa fa-user-circle"></i>
+                                    {% else %}
+                                    <i class="fa fa-user-circle-o"></i>
+                                    {% endif %}
                                 </span>
-                                {{ account.firstname }}
+                                {{ account.firstname }} {{ account.lastname }}
                             </a>
                             {% endfor %}
                         </nav>
@@ -27,7 +48,7 @@
                     <div class="column">
                         <p class="box">
                             หากยังไม่เคยลงทะเบียนเพื่อใช้งานระบบ<br>
-                            <a href="{{ url_for('register') }}" class="button">ลงทะเบียนที่นี่</a>
+                            <a href="{{ url_for('register') }}" class="button is-link">ลงทะเบียนที่นี่</a>
                         </p>
                     </div>
                 </div>
