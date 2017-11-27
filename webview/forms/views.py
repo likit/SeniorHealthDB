@@ -24,6 +24,7 @@ def main():
         session['form_data'] = {'_id': None,
                                     'created_by': current_user.id,
                                     'data': {
+                                        'personal': {},
                                         'bp': {},
                                         'cvd': [],
                                         'dental': {},
@@ -50,7 +51,19 @@ def main():
 @login_required
 def personalinfo():
     if request.method == 'POST':
-        return redirect(url_for('form.bloodpressure'))
+        form_data = session['form_data']
+        pnt_firstname = request.form.get('firstname', None)
+        pnt_lastname = request.form.get('lastname', None)
+        pnt_age = request.form.get('age', None)
+        form_data['data']['personal']['firstname'] = pnt_firstname
+        form_data['data']['personal']['lastname'] = pnt_lastname
+        form_data['data']['personal']['age'] = pnt_age
+        session['form_data'] = form_data  # update form data in session
+        if request.form['submit'] == 'save':
+            flash('บันทึกลงหน่วยความจำชั่วคราวแล้ว')
+            return redirect(url_for('form.personalinfo'))
+        if request.form['submit'] == 'next':
+            return redirect(url_for('form.bloodpressure'))
     return render_template('forms/personal.html')
 
 
