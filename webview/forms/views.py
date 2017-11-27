@@ -212,10 +212,23 @@ def end():
     return render_template('forms/end.html')
 
 
-@form.route('/list', methods=['GET'])
+@form.route('/list', methods=['GET', 'POST'])
 @login_required
 def record_list():
-    records = formdb.search(RecQ.created_by==current_user.id)
+    search_term = None
+    if request.method == 'POST':
+        records = []
+        search_term = request.form.get('searchTerm', None)
+        print(search_term)
+        if search_term:  # try firstname
+            for rec in formdb.search((RecQ.created_by==current_user.id)):
+                if rec['data']['personal']['firstname'].find(search_term) != -1:
+                    records.append(rec)
+                elif rec['data']['personal']['lastname'].find(search_term) != -1:
+                    records.append(rec)
+
+    if not search_term:
+        records = formdb.search(RecQ.created_by==current_user.id)
     return render_template('forms/list.html', records=records)
 
 
