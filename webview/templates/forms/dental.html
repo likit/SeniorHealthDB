@@ -47,7 +47,10 @@
             </aside>
         </div>
         <div class="column">
-            <span class="tag is-light is-size-7 is-aligned-right">ผู้รับการประเมิน นายสมใจ หมายปอง อายุ 45 ปี</span>
+            <span class="tag is-light is-size-7 is-aligned-right">ผู้รับการประเมิน
+                {{session['form_data']['data']['personal']['firstname']}} 
+                {{session['form_data']['data']['personal']['lastname']}} อายุ
+                {{session['form_data']['data']['personal']['age']}} ปี</span>
             <div class="box">
                 <form id="form" action="{{ url_for('form.dental') }}" method="POST">
                     <p class="title">ส่วนที่ 1 ประเมินพฤติกรรมเสี่ยงต่อสุขภาพช่องปาก</p>

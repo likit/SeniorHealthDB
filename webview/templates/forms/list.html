@@ -21,6 +21,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th colspan="2">Name</th>
                             <th>Created Date</th>
                             <th>Modified Date</th>
                             <th colspan="2">Action</th>
@@ -30,6 +31,8 @@
                         {% for rec in records %}
                         <tr>
                             <td>{{rec['_id'][:8]}}</td>
+                            <td>{{rec['data']['personal']['firstname']}}</td>
+                            <td>{{rec['data']['personal']['lastname']}}</td>
                             <td>{{rec['data']['created_date']}}</td>
                             <td>{{rec['data']['updated_date']}}</td>
                             <td>

@@ -47,6 +47,11 @@
             </aside>
         </div>
         <div class="column">
+            <span class="tag is-light is-size-7 is-aligned-right">ผู้รับการประเมิน
+                {{session['form_data']['data']['personal']['firstname']}} 
+                {{session['form_data']['data']['personal']['lastname']}} อายุ
+                {{session['form_data']['data']['personal']['age']}} ปี
+            </span>
             <div class="box">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
