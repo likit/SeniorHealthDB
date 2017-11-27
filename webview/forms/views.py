@@ -13,22 +13,26 @@ DATETIMEFORMAT = '%Y-%m-%d %H:%M:%S'
 RecQ = Query()
 
 
+def init_form_data():
+    session['form_data'] = {'_id': None,
+                                'created_by': current_user.id,
+                                'data': {
+                                    'personal': {},
+                                    'bp': {},
+                                    'cvd': [],
+                                    'dental': {},
+                                }}
+
+
 @form.route('/', methods=["GET"])
 @login_required
 def main():
     # clear existing form data if user starts over
     if request.args.get('startover', False) and 'form_data' in session:
-        del session['form_data']
+        init_form_data()
 
     if 'form_data' not in session:
-        session['form_data'] = {'_id': None,
-                                    'created_by': current_user.id,
-                                    'data': {
-                                        'personal': {},
-                                        'bp': {},
-                                        'cvd': [],
-                                        'dental': {},
-                                    }}
+        init_form_data()
 
     form_data = session['form_data']
     if not form_data['_id']:
@@ -195,7 +199,7 @@ def save():
             return render_template('forms/saved.html', success=False,
                     form_id=form_data['_id'],
                     updated_datetime=updated_datetime)
-        del session['form_data']
+        init_form_data()  # clear from data
         return render_template('forms/saved.html',
                     success=True,
                     form_id=form_data['_id'],
